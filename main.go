@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/smtp"
 	"os"
+	"strings"
 )
 
 // Feed is the entire RSS feed
@@ -49,19 +50,25 @@ func main() {
 	var latestPost = feed.Feed[0]
 
 	fmt.Println("Authenticating...")
-	auth := smtp.PlainAuth("", os.Getenv("CINDY_AUTH_EMAIL"), os.Getenv("CINDY_AUTH_PASSWORD"), os.Getenv("CINDY_SMTP_SERVER"))
+	auth := smtp.PlainAuth("", os.Getenv("CINDY_AUTH_USERNAME"), os.Getenv("CINDY_AUTH_PASSWORD"), os.Getenv("CINDY_SMTP_SERVER"))
 
-	to := "hello@simonewebdesign.it"
-	msg := []byte("To: " + to + "\r\n" +
-		"Subject: New Post: " + latestPost.Title + "\r\n" +
-		"Content-Type: text/html; charset=utf-8\r\n" +
-		"\r\n" +
-		wrapInTemplate(latestPost.Content, latestPost.Link.Href))
+	addresses, err := ioutil.ReadFile("addresses.txt")
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println("Sending mail to " + to + "...")
-	smtpErr := smtp.SendMail(os.Getenv("CINDY_SMTP_SERVER")+":"+os.Getenv("CINDY_SMTP_PORT"), auth, os.Getenv("CINDY_SENDER_EMAIL"), []string{to}, msg)
-	if smtpErr != nil {
-		log.Printf("Failed sending mail to `%s'; Error: %v", to, smtpErr)
+	for idx, to := range strings.Split(string(addresses), "\n") {
+		msg := []byte("To: " + to + "\r\n" +
+			"Subject: New Post: " + latestPost.Title + "\r\n" +
+			"Content-Type: text/html; charset=utf-8\r\n" +
+			"\r\n" +
+			wrapInTemplate(latestPost.Content, latestPost.Link.Href))
+
+		log.Printf("[%d] Sending mail to %s...", idx, to)
+		smtpErr := smtp.SendMail(os.Getenv("CINDY_SMTP_SERVER")+":"+os.Getenv("CINDY_SMTP_PORT"), auth, os.Getenv("CINDY_SENDER_EMAIL"), []string{to}, msg)
+		if smtpErr != nil {
+			log.Printf("Failed sending mail to `%s'; Error: %v", to, smtpErr)
+		}
 	}
 }
 
@@ -70,5 +77,8 @@ func wrapInTemplate(content string, link string) string {
 	if err != nil {
 		panic(err)
 	}
-	return string(dat)
+	var s = string(dat)
+	s = strings.ReplaceAll(s, "{{POST_CONTENT}}", content)
+	s = strings.ReplaceAll(s, "{{POST_LINK}}", link)
+	return s
 }
