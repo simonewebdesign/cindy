@@ -27,6 +27,10 @@ Cindy must be configured via environment variables. There are no default values,
     CINDY_SMTP_SERVER    # The address of your SMTP server, e.g.: smtp.example.com
     CINDY_SMTP_PORT      # The port to use. It's usually either 587 or 465.
 
+### How do I provide a list of email addresses?
+
+Cindy expects an `addresses.txt` file containing the list of emails separated by a newline. There should be no newline at the end of the file.
+
 
 ## Build from source and run
 
