@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/smtp"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -57,7 +58,14 @@ func main() {
 		panic(err)
 	}
 
+	var rxEmail = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+
 	for idx, to := range strings.Split(string(addresses), "\n") {
+		if len(to) > 254 || !rxEmail.MatchString(to) {
+			fmt.Printf("\033[31m✗INVALID EMAIL: %v\033[0m\n", to)
+			continue
+		}
+
 		msg := []byte("To: " + to + "\r\n" +
 			"Subject: New Post: " + latestPost.Title + "\r\n" +
 			"Content-Type: text/html; charset=utf-8\r\n" +
