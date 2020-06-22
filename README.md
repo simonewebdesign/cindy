@@ -12,6 +12,19 @@ If you're a blogger, you can see Cindy as a replacement for a service like Mailc
 
 TODO
 
+## Configuration
+
+Cindy must be configured via environment variables. There are no default values.
+
+`CINDY_RSS_URL`: The URL to an RSS feed, e.g.: https://www.simonewebdesign.it/atom.xml
+`CINDY_SENDER_EMAIL`: The "From" address, e.g.: no-reply@example.com
+
+`CINDY_AUTH_USERNAME`: For authenticating yourself on your SMTP server
+`CINDY_AUTH_PASSWORD`: Self explanatory :)
+
+`CINDY_SMTP_SERVER`: The address of your SMTP server, e.g.: smtp.example.com
+`CINDY_SMTP_PORT`: The port to use. It's usually either 587 or 465.
+
 ## Build from source and run
 
     go build main.go
