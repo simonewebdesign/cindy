@@ -46,12 +46,6 @@ func main() {
 	var feed Feed
 	xml.Unmarshal(body, &feed)
 
-	for i := 0; i < len(feed.Feed); i++ {
-		fmt.Println("Entry Title: " + feed.Feed[i].Title)
-		fmt.Println("Entry Link: " + feed.Feed[i].Link.Href)
-		fmt.Println("---")
-	}
-
 	var latestPost = feed.Feed[0]
 
 	fmt.Println("Authenticating...")
@@ -59,14 +53,22 @@ func main() {
 
 	to := "hello@simonewebdesign.it"
 	msg := []byte("To: " + to + "\r\n" +
-		"Subject: The latest post is here\r\n" +
+		"Subject: New Post: " + latestPost.Title + "\r\n" +
+		"Content-Type: text/html; charset=utf-8\r\n" +
 		"\r\n" +
-		latestPost.Content +
-		"Here’s the latest post. Hope you like it.\r\n")
+		wrapInTemplate(latestPost.Content, latestPost.Link.Href))
 
 	fmt.Println("Sending mail to " + to + "...")
 	smtpErr := smtp.SendMail(os.Getenv("CINDY_SMTP_SERVER")+":"+os.Getenv("CINDY_SMTP_PORT"), auth, os.Getenv("CINDY_SENDER_EMAIL"), []string{to}, msg)
 	if smtpErr != nil {
 		log.Printf("Failed sending mail to `%s'; Error: %v", to, smtpErr)
 	}
+}
+
+func wrapInTemplate(content string, link string) string {
+	dat, err := ioutil.ReadFile("template.html")
+	if err != nil {
+		panic(err)
+	}
+	return string(dat)
 }
