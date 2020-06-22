@@ -30,7 +30,7 @@ type Link struct {
 }
 
 func main() {
-	resp, httpErr := http.Get("https://www.simonewebdesign.it/atom.xml")
+	resp, httpErr := http.Get(os.Getenv("CINDY_RSS_URL"))
 	if httpErr != nil {
 		log.Printf("HTTP error: %v", httpErr)
 		return
