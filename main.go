@@ -64,10 +64,13 @@ func main() {
 			"\r\n" +
 			wrapInTemplate(latestPost.Content, latestPost.Link.Href))
 
-		log.Printf("[%d] Sending mail to %s...", idx, to)
+		log.Printf("[%d] Sending mail to `%s'...", idx, to)
+
 		smtpErr := smtp.SendMail(os.Getenv("CINDY_SMTP_SERVER")+":"+os.Getenv("CINDY_SMTP_PORT"), auth, os.Getenv("CINDY_SENDER_EMAIL"), []string{to}, msg)
 		if smtpErr != nil {
-			log.Printf("Failed sending mail to `%s'; Error: %v", to, smtpErr)
+			log.Printf("\033[31m✗FAIL: %v\033[0m\n", smtpErr)
+		} else {
+			log.Printf("\033[32mOK\033[0m\n")
 		}
 	}
 }
