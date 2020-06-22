@@ -62,7 +62,7 @@ func main() {
 			"Subject: New Post: " + latestPost.Title + "\r\n" +
 			"Content-Type: text/html; charset=utf-8\r\n" +
 			"\r\n" +
-			wrapInTemplate(latestPost.Content, latestPost.Link.Href))
+			wrapInTemplate(latestPost.Title, latestPost.Content, latestPost.Link.Href))
 
 		log.Printf("[%d] Sending mail to `%s'...", idx, to)
 
@@ -75,12 +75,13 @@ func main() {
 	}
 }
 
-func wrapInTemplate(content string, link string) string {
+func wrapInTemplate(title string, content string, link string) string {
 	dat, err := ioutil.ReadFile("template.html")
 	if err != nil {
 		panic(err)
 	}
 	var s = string(dat)
+	s = strings.ReplaceAll(s, "{{POST_TITLE}}", title)
 	s = strings.ReplaceAll(s, "{{POST_CONTENT}}", content)
 	s = strings.ReplaceAll(s, "{{POST_LINK}}", link)
 	return s
