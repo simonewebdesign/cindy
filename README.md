@@ -11,7 +11,7 @@ If you're a blogger, you can see Cindy as a replacement for a service like Mailc
 
 ## Installation
 
-TODO
+Simply clone or download this repo. You'll need [Go](https://golang.org/) to compile Cindy.
 
 
 ## Configuration
