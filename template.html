@@ -9,8 +9,6 @@
           GLOBAL RESETS
       ------------------------------------- */
 
-      /*All the styling goes here*/
-
       img {
         border: none;
         -ms-interpolation-mode: bicubic;
@@ -121,7 +119,6 @@
         font-size: 35px;
         font-weight: 300;
         text-align: center;
-        text-transform: capitalize;
       }
 
       p,
@@ -146,86 +143,14 @@
       }
 
       /* -------------------------------------
-          BUTTONS
-      ------------------------------------- */
-      .btn {
-        box-sizing: border-box;
-        width: 100%; }
-        .btn > tbody > tr > td {
-          padding-bottom: 15px; }
-        .btn table {
-          width: auto;
-      }
-        .btn table td {
-          background-color: #ffffff;
-          border-radius: 5px;
-          text-align: center;
-      }
-        .btn a {
-          background-color: #ffffff;
-          border: solid 1px #3498db;
-          border-radius: 5px;
-          box-sizing: border-box;
-          color: #3498db;
-          cursor: pointer;
-          display: inline-block;
-          font-size: 14px;
-          font-weight: bold;
-          margin: 0;
-          padding: 12px 25px;
-          text-decoration: none;
-          text-transform: capitalize;
-      }
-
-      .btn-primary table td {
-        background-color: #3498db;
-      }
-
-      .btn-primary a {
-        background-color: #3498db;
-        border-color: #3498db;
-        color: #ffffff;
-      }
-
-      /* -------------------------------------
           OTHER STYLES THAT MIGHT BE USEFUL
       ------------------------------------- */
-      .last {
-        margin-bottom: 0;
+      .gutter {
+        display: none;
       }
 
-      .first {
-        margin-top: 0;
-      }
-
-      .align-center {
-        text-align: center;
-      }
-
-      .align-right {
-        text-align: right;
-      }
-
-      .align-left {
-        text-align: left;
-      }
-
-      .clear {
-        clear: both;
-      }
-
-      .mt0 {
-        margin-top: 0;
-      }
-
-      .mb0 {
-        margin-bottom: 0;
-      }
-
-      hr {
-        border: 0;
-        border-bottom: 1px solid #f6f6f6;
-        margin: 20px 0;
+      .code {
+        max-width: 436px;
       }
 
       /* -------------------------------------
@@ -333,7 +258,7 @@
                       <td>
                         <p>Hey there!</p>
                         <p>I wrote a <a href="{{POST_LINK}}" target="_blank">new blog post</a>, check it out:</p>
-                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                           <tbody>
                             <tr>
                               <td align="left">
