@@ -12,6 +12,11 @@ If you're a blogger, you can see Cindy as a replacement for a service like Mailc
 
 TODO
 
-## Usage
+## Build from source and run
 
-TODO
+    go build main.go
+    ./main
+
+    # or
+
+    go run main.go
