@@ -49,10 +49,11 @@ func main() {
 	xml.Unmarshal(body, &feed)
 
 	var latestPost = feed.Feed[0]
+	var mailBody = makeMessageBody(latestPost.Title, latestPost.Content, latestPost.Link.Href)
 
 	if len(os.Args) > 1 {
 		fmt.Println("Preview")
-		fmt.Println(makeMessage("test-recipient@example.com", latestPost))
+		fmt.Println(makeMessage("test-recipient@example.com", latestPost.Title, mailBody))
 		os.Exit(0)
 	}
 
@@ -72,7 +73,7 @@ func main() {
 			continue
 		}
 
-		msg := makeMessage(to, latestPost)
+		msg := makeMessage(to, latestPost.Title, mailBody)
 
 		log.Printf("[%d] Sending mail to `%s'...", idx, to)
 
@@ -85,15 +86,15 @@ func main() {
 	}
 }
 
-func makeMessage(recipient string, post Entry) string {
+func makeMessage(recipient string, title string, body string) string {
 	return "To: " + recipient + "\r\n" +
-		"Subject: New Post: " + post.Title + "\r\n" +
+		"Subject: New Post: " + title + "\r\n" +
 		"Content-Type: text/html; charset=utf-8\r\n" +
 		"\r\n" +
-		wrapInTemplate(post.Title, post.Content, post.Link.Href)
+		body
 }
 
-func wrapInTemplate(title string, content string, link string) string {
+func makeMessageBody(title string, content string, link string) string {
 	dat, err := ioutil.ReadFile("template.html")
 	if err != nil {
 		panic(err)
