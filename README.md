@@ -1,4 +1,4 @@
-# Cindy
+# 🌼 Cindy
 
 Cindy is a command-line syndication tool. It checks an RSS feed for new entries and sends a bunch of emails on behalf of an email address of your choice.
 
