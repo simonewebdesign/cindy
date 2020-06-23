@@ -31,6 +31,18 @@ Cindy must be configured via environment variables. There are no default values,
 
 Cindy expects an `addresses.txt` file containing the list of emails separated by a newline. There should be no newline at the end of the file.
 
+### Can I preview the email before sending it?
+
+Sure: simply pass an extra shell argument (any will do). For example:
+
+    cindy --preview
+
+This will print the full email that will be sent, complete with headers. You may want to save it to a local file, in order to preview it in your web browser:
+
+    cindy --preview > email-preview.html
+
+When you're happy with it, just rerun the tool without the argument.
+
 
 ## Build from source and run
 

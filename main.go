@@ -50,6 +50,12 @@ func main() {
 
 	var latestPost = feed.Feed[0]
 
+	if len(os.Args) > 1 {
+		fmt.Println("Preview")
+		fmt.Println(makeMessage("test-recipient@example.com", latestPost))
+		os.Exit(0)
+	}
+
 	fmt.Println("Authenticating...")
 	auth := smtp.PlainAuth("", os.Getenv("CINDY_AUTH_USERNAME"), os.Getenv("CINDY_AUTH_PASSWORD"), os.Getenv("CINDY_SMTP_SERVER"))
 
@@ -66,21 +72,25 @@ func main() {
 			continue
 		}
 
-		msg := []byte("To: " + to + "\r\n" +
-			"Subject: New Post: " + latestPost.Title + "\r\n" +
-			"Content-Type: text/html; charset=utf-8\r\n" +
-			"\r\n" +
-			wrapInTemplate(latestPost.Title, latestPost.Content, latestPost.Link.Href))
+		msg := makeMessage(to, latestPost)
 
 		log.Printf("[%d] Sending mail to `%s'...", idx, to)
 
-		smtpErr := smtp.SendMail(os.Getenv("CINDY_SMTP_SERVER")+":"+os.Getenv("CINDY_SMTP_PORT"), auth, os.Getenv("CINDY_SENDER_EMAIL"), []string{to}, msg)
+		smtpErr := smtp.SendMail(os.Getenv("CINDY_SMTP_SERVER")+":"+os.Getenv("CINDY_SMTP_PORT"), auth, os.Getenv("CINDY_SENDER_EMAIL"), []string{to}, []byte(msg))
 		if smtpErr != nil {
 			log.Printf("\033[31m✗FAIL: %v\033[0m\n", smtpErr)
 		} else {
 			log.Printf("\033[32mOK\033[0m\n")
 		}
 	}
+}
+
+func makeMessage(recipient string, post Entry) string {
+	return "To: " + recipient + "\r\n" +
+		"Subject: New Post: " + post.Title + "\r\n" +
+		"Content-Type: text/html; charset=utf-8\r\n" +
+		"\r\n" +
+		wrapInTemplate(post.Title, post.Content, post.Link.Href)
 }
 
 func wrapInTemplate(title string, content string, link string) string {
