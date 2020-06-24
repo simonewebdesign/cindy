@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/smtp"
+	"net/url"
 	"os"
 	"regexp"
 	"strings"
@@ -74,6 +75,7 @@ func main() {
 		}
 
 		msg := makeMessage(to, latestPost.Title, mailBody)
+		msg = strings.Replace(msg, "{{UNSUB_LINK}}", "https://www.simonewebdesign.it/unsub?email="+url.QueryEscape(to), -1)
 
 		log.Printf("[%d] Sending mail to `%s'...", idx, to)
 
