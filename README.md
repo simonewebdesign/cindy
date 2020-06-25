@@ -19,13 +19,16 @@ Simply clone or download this repo. You'll need [Go](https://golang.org/) to com
 Cindy must be configured via environment variables. There are no default values, therefore these variables are all mandatory.
 
     CINDY_RSS_URL        # The URL to an RSS feed, e.g.: https://www.simonewebdesign.it/atom.xml
-    CINDY_SENDER_EMAIL   # The "From" address, e.g.: no-reply@example.com
+    CINDY_SENDER_EMAIL   # The "From" address, e.g.: "Weekly News" <news@example.com>
 
     CINDY_AUTH_USERNAME  # For authenticating yourself on your SMTP server
     CINDY_AUTH_PASSWORD  # Self explanatory
 
     CINDY_SMTP_SERVER    # The address of your SMTP server, e.g.: smtp.example.com
     CINDY_SMTP_PORT      # The port to use. It's usually either 587 or 465.
+
+    CINDY_UNSUB_URL      # The URL to unsubscribe, e.g.: https://example.com/unsubscribe?email=
+                         # The email will be appended to the string at runtime.
 
 ### How do I provide a list of email addresses?
 
