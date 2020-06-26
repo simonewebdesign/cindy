@@ -11,11 +11,20 @@ If you're a blogger, you can see Cindy as a replacement for a service like Mailc
 
 ## Installation
 
-Simply clone or download this repo. You'll need [Go](https://golang.org/) to compile Cindy.
-
 ### Via Homebrew (macOS)
 
     brew install simonewebdesign/tap/cindy
+
+## Compile from source
+
+You'll need [Go](https://golang.org/) to compile Cindy.
+
+    go build cindy.go && ./cindy
+
+    # or
+
+    go run cindy.go
+
 
 ## Configuration
 
@@ -33,63 +42,34 @@ Cindy must be configured via environment variables. There are no default values,
     CINDY_UNSUB_URL      # The URL to unsubscribe, e.g.: https://example.com/unsubscribe?email=
                          # The email will be appended to the string at runtime.
 
-### How do I provide a list of email addresses?
+    CINDY_TEMPLATE_PATH  # Path to the HTML email template to be sent by Cindy
+    CINDY_ADDRESSES_PATH # Path to the TXT file containing the list of emails separated
+                           by a newline. There should be no newline at the end of this file.
 
-Cindy expects an `addresses.txt` file containing the list of emails separated by a newline. There should be no newline at the end of the file.
+
+## Frequently Asked Questions
+
+### How do I provide my own email template?
+
+You have total freedom over that. A good starting point could be [leemunroe/responsive-html-email-template](https://github.com/leemunroe/responsive-html-email-template). Once you have a template, don't forget to set the `CINDY_TEMPLATE_PATH` environment variable.
+
+### How can I inject data into the email template?
+
+Simply put the following placeholders into your template and they will be replaced with the actual values at runtime.
+
+    {{POST_URL}}         # URL to the blog post entry
+    {{POST_TITLE}}       # Title of the blog post
+    {{POST_CONTENT}}     # HTML content
+    {{UNSUB_URL}}        # URL to unsubscribe (i.e. the CINDY_UNSUB_URL environment variable)
 
 ### Can I preview the email before sending it?
 
-Sure: simply pass an extra shell argument (any will do). For example:
+Sure: just pass an extra shell argument (any will do). For example:
 
-    cindy --preview
+    cindy preview
 
 This will print the full email that will be sent, complete with headers. You may want to save it to a local file, in order to preview it in your web browser:
 
-    cindy --preview > email-preview.html
+    cindy preview > email-preview.html
 
-When you're happy with it, just rerun the tool without the argument.
-
-
-## Build from source and run
-
-    go build main.go
-    ./main
-
-    # or
-
-    go run main.go
-
-
-## Caveats
-
-### Don't forget to inline the CSS
-
-It's important to also inline the CSS before sending the email:
-
-    node_modules/.bin/juice template.html template.html
-
-### License and credits
-
-The template was originally forked from [leemunroe/responsive-html-email-template](https://github.com/leemunroe/responsive-html-email-template).
-
-    The MIT License (MIT)
-
-    Copyright (c) 2020 simonewebdesign
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+When you're happy with it, just rerun Cindy without any arguments.

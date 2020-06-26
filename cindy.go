@@ -22,7 +22,6 @@ type Feed struct {
 type Entry struct {
 	Title   string `xml:"title"`
 	Link    Link   `xml:"link"`
-	Updated string `xml:"updated"`
 	ID      string `xml:"id"`
 	Content string `xml:"content"`
 }
@@ -61,7 +60,7 @@ func main() {
 	fmt.Println("Authenticating...")
 	auth := smtp.PlainAuth("", os.Getenv("CINDY_AUTH_USERNAME"), os.Getenv("CINDY_AUTH_PASSWORD"), os.Getenv("CINDY_SMTP_SERVER"))
 
-	addresses, err := ioutil.ReadFile("addresses.txt")
+	addresses, err := ioutil.ReadFile(os.Getenv("CINDY_ADDRESSES_PATH"))
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +74,7 @@ func main() {
 		}
 
 		msg := makeMessage(to, latestPost.Title, mailBody)
-		msg = strings.Replace(msg, "{{UNSUB_LINK}}", os.Getenv("CINDY_UNSUB_URL")+url.QueryEscape(to), -1)
+		msg = strings.Replace(msg, "{{UNSUB_URL}}", os.Getenv("CINDY_UNSUB_URL")+url.QueryEscape(to), -1)
 
 		log.Printf("[%d] Sending mail to `%s'...", idx, to)
 
@@ -97,13 +96,13 @@ func makeMessage(recipient string, title string, body string) string {
 }
 
 func makeMessageBody(title string, content string, link string) string {
-	dat, err := ioutil.ReadFile("template.html")
+	dat, err := ioutil.ReadFile(os.Getenv("CINDY_TEMPLATE_PATH"))
 	if err != nil {
 		panic(err)
 	}
 	var s = string(dat)
 	s = strings.ReplaceAll(s, "{{POST_TITLE}}", title)
 	s = strings.ReplaceAll(s, "{{POST_CONTENT}}", content)
-	s = strings.ReplaceAll(s, "{{POST_LINK}}", link)
+	s = strings.ReplaceAll(s, "{{POST_URL}}", link)
 	return s
 }
