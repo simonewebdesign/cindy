@@ -13,6 +13,9 @@ If you're a blogger, you can see Cindy as a replacement for a service like Mailc
 
 Simply clone or download this repo. You'll need [Go](https://golang.org/) to compile Cindy.
 
+### Via Homebrew (macOS)
+
+    brew install simonewebdesign/tap/cindy
 
 ## Configuration
 
