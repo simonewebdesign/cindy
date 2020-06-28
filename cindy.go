@@ -53,7 +53,7 @@ func main() {
 
 	if len(os.Args) > 1 {
 		fmt.Println("Preview")
-		fmt.Println(makeMessage("test-recipient@example.com", latestPost.Title, mailBody))
+		fmt.Println(makeMessage("Test Sender <test-sender@example.com>", "test-recipient@example.com", latestPost.Title, mailBody))
 		os.Exit(0)
 	}
 
@@ -73,7 +73,7 @@ func main() {
 			continue
 		}
 
-		msg := makeMessage(to, latestPost.Title, mailBody)
+		msg := makeMessage(os.Getenv("CINDY_FROM"), to, latestPost.Title, mailBody)
 		msg = strings.Replace(msg, "{{UNSUB_URL}}", os.Getenv("CINDY_UNSUB_URL")+url.QueryEscape(to), -1)
 
 		log.Printf("[%d] Sending mail to `%s'...", idx, to)
@@ -87,8 +87,9 @@ func main() {
 	}
 }
 
-func makeMessage(recipient string, title string, body string) string {
-	return "To: " + recipient + "\r\n" +
+func makeMessage(sender string, recipient string, title string, body string) string {
+	return "From: " + sender + "\r\n" +
+		"To: " + recipient + "\r\n" +
 		"Subject: New Post: " + title + "\r\n" +
 		"Content-Type: text/html; charset=utf-8\r\n" +
 		"\r\n" +

@@ -31,7 +31,8 @@ You'll need [Go](https://golang.org/) to compile Cindy.
 Cindy must be configured via environment variables. There are no default values, therefore these variables are all mandatory.
 
     CINDY_RSS_URL        # The URL to an RSS feed, e.g.: https://www.simonewebdesign.it/atom.xml
-    CINDY_SENDER_EMAIL   # The "From" address, e.g.: "Weekly News" <news@example.com>
+    CINDY_FROM           # The "From" header,  e.g.: "Weekly Newsletter" <news@example.com>
+    CINDY_SENDER_EMAIL   # The sender address, e.g.: news@example.com
 
     CINDY_AUTH_USERNAME  # For authenticating yourself on your SMTP server
     CINDY_AUTH_PASSWORD  # Self explanatory
