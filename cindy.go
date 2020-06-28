@@ -22,7 +22,6 @@ type Feed struct {
 type Entry struct {
 	Title   string `xml:"title"`
 	Link    Link   `xml:"link"`
-	ID      string `xml:"id"`
 	Content string `xml:"content"`
 }
 
