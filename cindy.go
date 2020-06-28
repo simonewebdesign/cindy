@@ -30,7 +30,24 @@ type Link struct {
 	Href string `xml:"href,attr"`
 }
 
+func checkVar(name string) {
+	if os.Getenv(name) == "" {
+		panic(name + " not set")
+	}
+}
+
 func main() {
+	checkVar("CINDY_RSS_URL")
+	checkVar("CINDY_FROM")
+	checkVar("CINDY_SENDER_EMAIL")
+	checkVar("CINDY_AUTH_USERNAME")
+	checkVar("CINDY_AUTH_PASSWORD")
+	checkVar("CINDY_SMTP_SERVER")
+	checkVar("CINDY_SMTP_PORT")
+	checkVar("CINDY_UNSUB_URL")
+	checkVar("CINDY_TEMPLATE_PATH")
+	checkVar("CINDY_ADDRESSES_PATH")
+
 	resp, httpErr := http.Get(os.Getenv("CINDY_RSS_URL"))
 	if httpErr != nil {
 		log.Printf("HTTP error: %v", httpErr)
