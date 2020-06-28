@@ -15,7 +15,7 @@ If you're a blogger, you can see Cindy as a replacement for a service like Mailc
 
     brew install simonewebdesign/tap/cindy
 
-## Compile from source
+### Compile from source
 
 You'll need [Go](https://golang.org/) to compile Cindy.
 
