@@ -1,5 +1,7 @@
 # 🌼 Cindy
 
+<a href="https://goreportcard.com/report/github.com/simonewebdesign/cindy"><img src="https://goreportcard.com/badge/github.com/simonewebdesign/cindy"></a>
+
 Cindy is a command-line syndication tool. It checks an RSS feed for new entries and sends a bunch of emails on behalf of an email address of your choice.
 
 The recipients are validated before an email is sent, according to a regular expression you can specify. Failures are noted at the end of the process, so you can decide what to do next (i.e. maybe retry sending, or delete the bogus address from your mailing list).
